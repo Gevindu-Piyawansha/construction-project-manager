@@ -23,6 +23,7 @@ import {
 } from '../features/projects/projectSlice';
 import ProjectCard from '../components/projects/ProjectCard';
 import ProjectForm from '../components/projects/ProjectForm';
+import ProjectDetailModal from '../components/projects/ProjectDetailModal';
 import Toast from '../components/common/Toast';
 import { useToast } from '../hooks/useToast';
 import { Project, ProjectCreate } from '../types/project';
@@ -33,6 +34,7 @@ const Projects: React.FC = () => {
   const { projects, loading, error } = useAppSelector((state: any) => state.projects);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [viewProject, setViewProject] = useState<Project | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   
@@ -89,7 +91,19 @@ const Projects: React.FC = () => {
   };
 
   const handleViewProject = (project: Project) => {
-    navigate(`/projects/${project.id}`);
+    setViewProject(project);
+  };
+
+  const handleCloseDetailModal = () => {
+    setViewProject(null);
+  };
+
+  const handleEditFromDetailModal = () => {
+    if (viewProject) {
+      setSelectedProject(viewProject);
+      setViewProject(null);
+      setIsFormOpen(true);
+    }
   };
 
   // Filter and search logic
@@ -204,6 +218,14 @@ const Projects: React.FC = () => {
         onSubmit={selectedProject ? handleUpdateProject : handleCreateProject}
         initialData={selectedProject || undefined}
         title={selectedProject ? 'Edit Project' : 'Create Project'}
+      />
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        open={!!viewProject}
+        onClose={handleCloseDetailModal}
+        project={viewProject}
+        onEdit={handleEditFromDetailModal}
       />
 
       {/* Toast Notifications */}
