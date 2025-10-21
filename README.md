@@ -3,7 +3,7 @@
 A modern, full-featured construction project management web application showcasing real-world Norwegian construction projects in the Stavanger region. Built with React, TypeScript, and Material-UI to demonstrate enterprise-level development skills for the Norwegian market.
 
 ## 🌐 Live Demo
-**[🚀 View Live Application](https://construction-project-manager-h2316c5je.vercel.app)** ← Click to see it in action!
+**[🚀 View Live Application](https://construction-project-manager-5nboxu3z1.vercel.app)** ← Click to see it in action!
 
 [![React](https://img.shields.io/badge/React-19.2.0-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9.5-blue.svg)](https://www.typescriptlang.org/)
