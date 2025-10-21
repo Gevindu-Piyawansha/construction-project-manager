@@ -35,6 +35,7 @@ const Projects: React.FC = () => {
   const [viewProject, setViewProject] = useState<Project | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('name');
   
   // Toast notifications hook
   const { toastState, showSuccess, showError, hideToast } = useToast();
@@ -106,13 +107,35 @@ const Projects: React.FC = () => {
 
   // Filter and search logic
   const filteredProjects = useMemo(() => {
-    return projects.filter((project: Project) => {
+    let result = projects.filter((project: Project) => {
       const matchesSearch = project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.description.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesStatus = statusFilter === 'all' || project.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
-  }, [projects, searchQuery, statusFilter]);
+
+    // Sorting
+    result.sort((a: Project, b: Project) => {
+      switch (sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'startDate':
+          return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+        case 'endDate':
+          return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+        case 'budget':
+          return b.budget - a.budget; // Highest first
+        case 'progress':
+          return b.progress - a.progress; // Highest first
+        case 'status':
+          return a.status.localeCompare(b.status);
+        default:
+          return 0;
+      }
+    });
+
+    return result;
+  }, [projects, searchQuery, statusFilter, sortBy]);
 
   if (error) {
     return <Alert severity="error">{error}</Alert>;
@@ -132,6 +155,52 @@ const Projects: React.FC = () => {
         >
           New Project
         </Button>
+      </Box>
+
+      {/* Quick Stats */}
+      <Box className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <Card sx={{ bgcolor: 'primary.main', color: 'white' }}>
+          <CardContent sx={{ py: 2 }}>
+            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              Total Projects
+            </Typography>
+            <Typography variant="h4" fontWeight="bold">
+              {projects.length}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card sx={{ bgcolor: 'info.main', color: 'white' }}>
+          <CardContent sx={{ py: 2 }}>
+            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              In Progress
+            </Typography>
+            <Typography variant="h4" fontWeight="bold">
+              {projects.filter((p: Project) => p.status === 'in-progress').length}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card sx={{ bgcolor: 'success.main', color: 'white' }}>
+          <CardContent sx={{ py: 2 }}>
+            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              Completed
+            </Typography>
+            <Typography variant="h4" fontWeight="bold">
+              {projects.filter((p: Project) => p.status === 'completed').length}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card sx={{ bgcolor: 'secondary.main', color: 'white' }}>
+          <CardContent sx={{ py: 2 }}>
+            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              Avg Progress
+            </Typography>
+            <Typography variant="h4" fontWeight="bold">
+              {projects.length > 0 
+                ? Math.round(projects.reduce((sum: number, p: Project) => sum + p.progress, 0) / projects.length)
+                : 0}%
+            </Typography>
+          </CardContent>
+        </Card>
       </Box>
 
       {/* Search and Filter */}
@@ -165,6 +234,22 @@ const Projects: React.FC = () => {
           <MenuItem value="in-progress">In Progress</MenuItem>
           <MenuItem value="completed">Completed</MenuItem>
           <MenuItem value="on-hold">On Hold</MenuItem>
+        </TextField>
+        <TextField
+          select
+          label="Sort By"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          variant="outlined"
+          size="small"
+          sx={{ minWidth: 150 }}
+        >
+          <MenuItem value="name">Name (A-Z)</MenuItem>
+          <MenuItem value="startDate">Start Date</MenuItem>
+          <MenuItem value="endDate">End Date</MenuItem>
+          <MenuItem value="budget">Budget (High-Low)</MenuItem>
+          <MenuItem value="progress">Progress (High-Low)</MenuItem>
+          <MenuItem value="status">Status</MenuItem>
         </TextField>
       </Box>
 
