@@ -1,8 +1,29 @@
-# Getting Started with Create React App
+# Construction Project Manager
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive web application for managing construction projects, resources, and tasks. Built with React, TypeScript, and modern web technologies.
 
-## Available Scripts
+## Features
+
+- Project Management
+- Resource Allocation
+- Task Tracking
+- Progress Visualization
+- Timeline Management
+- Real-time Updates
+- Reporting Dashboard
+
+## Tech Stack
+
+- React with TypeScript
+- Material-UI (MUI)
+- Redux Toolkit for state management
+- React Router for navigation
+- Chart.js for data visualization
+- Three.js for 3D visualization
+- Tailwind CSS for styling
+- Axios for API communication
+
+## Getting Started
 
 In the project directory, you can run:
 
