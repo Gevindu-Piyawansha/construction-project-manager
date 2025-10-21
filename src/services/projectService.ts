@@ -1,5 +1,4 @@
 import { ApiService } from './apiService';
-import { API_ENDPOINTS } from '../config/api';
 import { Project, ProjectCreate, ProjectUpdate } from '../types/project';
 
 // Mock data for development - Stavanger, Norway construction projects

@@ -23,6 +23,8 @@ import {
 } from '../features/projects/projectSlice';
 import ProjectCard from '../components/projects/ProjectCard';
 import ProjectForm from '../components/projects/ProjectForm';
+import Toast from '../components/common/Toast';
+import { useToast } from '../hooks/useToast';
 import { Project, ProjectCreate } from '../types/project';
 
 const Projects: React.FC = () => {
@@ -33,14 +35,22 @@ const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  
+  // Toast notifications hook
+  const { toastState, showSuccess, showError, hideToast } = useToast();
 
   useEffect(() => {
     dispatch(fetchProjects());
   }, [dispatch]);
 
-  const handleCreateProject = (project: ProjectCreate) => {
-    dispatch(createProject(project));
-    setIsFormOpen(false);
+  const handleCreateProject = async (project: ProjectCreate) => {
+    try {
+      await dispatch(createProject(project)).unwrap();
+      setIsFormOpen(false);
+      showSuccess(`Project "${project.name}" created successfully!`);
+    } catch (err) {
+      showError('Failed to create project. Please try again.');
+    }
   };
 
   const handleEditProject = (project: Project) => {
@@ -48,17 +58,28 @@ const Projects: React.FC = () => {
     setIsFormOpen(true);
   };
 
-  const handleUpdateProject = (project: ProjectCreate) => {
+  const handleUpdateProject = async (project: ProjectCreate) => {
     if (selectedProject) {
-      dispatch(updateProject({ id: selectedProject.id, ...project }));
-      setIsFormOpen(false);
-      setSelectedProject(null);
+      try {
+        await dispatch(updateProject({ id: selectedProject.id, ...project })).unwrap();
+        setIsFormOpen(false);
+        setSelectedProject(null);
+        showSuccess(`Project "${project.name}" updated successfully!`);
+      } catch (err) {
+        showError('Failed to update project. Please try again.');
+      }
     }
   };
 
-  const handleDeleteProject = (projectId: string) => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
-      dispatch(deleteProject(projectId));
+  const handleDeleteProject = async (projectId: string) => {
+    const project = projects.find((p: Project) => p.id === projectId);
+    if (window.confirm(`Are you sure you want to delete "${project?.name}"? This action cannot be undone.`)) {
+      try {
+        await dispatch(deleteProject(projectId)).unwrap();
+        showSuccess('Project deleted successfully!');
+      } catch (err) {
+        showError('Failed to delete project. Please try again.');
+      }
     }
   };
 
@@ -183,6 +204,14 @@ const Projects: React.FC = () => {
         onSubmit={selectedProject ? handleUpdateProject : handleCreateProject}
         initialData={selectedProject || undefined}
         title={selectedProject ? 'Edit Project' : 'Create Project'}
+      />
+
+      {/* Toast Notifications */}
+      <Toast
+        open={toastState.open}
+        message={toastState.message}
+        severity={toastState.severity}
+        onClose={hideToast}
       />
     </Box>
   );
