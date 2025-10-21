@@ -147,8 +147,17 @@ This app is ready to deploy to:
 
 ## 📝 License
 
-MIT License - feel free to use this project for your portfolio!
+**Portfolio License** - This project is for viewing and assessment purposes only.
+
+This is a **professional portfolio project** - not open source. Please see [LICENSE](LICENSE) for details.
+
+- ✅ View and review code for employment/recruitment purposes
+- ✅ Reference for technical assessment
+- ❌ Not for commercial use or redistribution
+- ❌ Not for copying or use as template
+
+**For employment or collaboration inquiries, please contact me directly.**
 
 ---
 
-⭐ **Star this repo if you find it helpful!**
+⭐ **Interested in hiring? Let's connect!**
