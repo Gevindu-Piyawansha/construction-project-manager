@@ -48,18 +48,88 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     ...initialData,
   });
 
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    // Required field validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Project name is required';
+    } else if (formData.name.trim().length < 3) {
+      newErrors.name = 'Project name must be at least 3 characters';
+    }
+
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+    } else if (formData.description.trim().length < 10) {
+      newErrors.description = 'Description must be at least 10 characters';
+    }
+
+    if (!formData.location.trim()) {
+      newErrors.location = 'Location is required';
+    }
+
+    if (!formData.manager.trim()) {
+      newErrors.manager = 'Project manager is required';
+    }
+
+    // Date validation
+    if (!formData.startDate) {
+      newErrors.startDate = 'Start date is required';
+    }
+
+    if (!formData.endDate) {
+      newErrors.endDate = 'End date is required';
+    }
+
+    if (formData.startDate && formData.endDate) {
+      const start = new Date(formData.startDate);
+      const end = new Date(formData.endDate);
+      
+      if (end <= start) {
+        newErrors.endDate = 'End date must be after start date';
+      }
+    }
+
+    // Budget validation
+    if (formData.budget <= 0) {
+      newErrors.budget = 'Budget must be greater than 0';
+    }
+
+    // Progress validation
+    if (formData.progress < 0 || formData.progress > 100) {
+      newErrors.progress = 'Progress must be between 0 and 100';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-  setFormData((prev: ProjectCreate) => ({
+    setFormData((prev: ProjectCreate) => ({
       ...prev,
       [name]: name === 'budget' || name === 'progress' ? Number(value) : value,
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
-    onClose();
+    
+    if (validateForm()) {
+      onSubmit(formData);
+      onClose();
+    }
   };
 
   return (
@@ -76,6 +146,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 onChange={handleChange}
                 fullWidth
                 required
+                error={!!errors.name}
+                helperText={errors.name}
               />
             </div>
 
@@ -89,6 +161,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 multiline
                 rows={4}
                 required
+                error={!!errors.description}
+                helperText={errors.description}
               />
             </div>
 
@@ -102,6 +176,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 fullWidth
                 required
                 InputLabelProps={{ shrink: true }}
+                error={!!errors.startDate}
+                helperText={errors.startDate}
               />
             </div>
 
@@ -115,6 +191,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 fullWidth
                 required
                 InputLabelProps={{ shrink: true }}
+                error={!!errors.endDate}
+                helperText={errors.endDate}
               />
             </div>
 
@@ -139,12 +217,20 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             <div>
               <TextField
                 name="budget"
-                label="Budget"
+                label="Budget (NOK)"
                 type="number"
                 value={formData.budget}
                 onChange={handleChange}
                 fullWidth
                 required
+                error={!!errors.budget}
+                helperText={errors.budget}
+                InputProps={{
+                  inputProps: {
+                    min: 0,
+                    step: 1000,
+                  },
+                }}
               />
             </div>
 
@@ -156,6 +242,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 onChange={handleChange}
                 fullWidth
                 required
+                error={!!errors.location}
+                helperText={errors.location}
               />
             </div>
 
@@ -167,6 +255,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 onChange={handleChange}
                 fullWidth
                 required
+                error={!!errors.manager}
+                helperText={errors.manager}
               />
             </div>
 
@@ -179,6 +269,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 onChange={handleChange}
                 fullWidth
                 required
+                error={!!errors.progress}
+                helperText={errors.progress}
                 InputProps={{
                   inputProps: {
                     min: 0,
