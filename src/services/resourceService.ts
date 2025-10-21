@@ -1,6 +1,5 @@
 import { ApiService } from './apiService';
-import { API_ENDPOINTS } from '../config/api';
-import { Resource, ResourceCreate, ResourceUpdate } from '../types/resource';
+import { Resource } from '../types/resource';
 
 class ResourceService extends ApiService {
     async getResourcesByProject(projectId: string): Promise<Resource[]> {

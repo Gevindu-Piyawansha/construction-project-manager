@@ -3,8 +3,10 @@ import {
   Typography,
   Button,
   Box,
-  CircularProgress,
   Alert,
+  Skeleton,
+  Card,
+  CardContent,
 } from '@mui/material';
 // Using Tailwind grid instead of MUI Grid to avoid MUI Grid TypeScript overload errors
 import { Add as AddIcon } from '@mui/icons-material';
@@ -85,9 +87,21 @@ const Projects: React.FC = () => {
       </Box>
 
       {loading ? (
-        <Box className="flex justify-center">
-          <CircularProgress />
-        </Box>
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <Card key={i}>
+              <CardContent>
+                <Skeleton variant="text" width="60%" height={32} />
+                <Skeleton variant="rectangular" width="30%" height={24} className="mb-2" />
+                <Skeleton variant="text" width="100%" />
+                <Skeleton variant="text" width="90%" />
+                <Skeleton variant="rectangular" width="100%" height={8} className="my-3" />
+                <Skeleton variant="text" width="50%" />
+                <Skeleton variant="text" width="70%" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       ) : (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project: Project) => (

@@ -8,7 +8,7 @@ import {
   TextField,
   MenuItem,
 } from '@mui/material';
-import { Task, TaskCreate } from '../../types/task';
+import { TaskCreate } from '../../types/task';
 
 interface TaskFormProps {
   open: boolean;
