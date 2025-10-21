@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 // Using Tailwind grid instead of MUI Grid to avoid MUI Grid TypeScript overload errors
 import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   fetchProjects,
@@ -30,7 +29,6 @@ import { Project, ProjectCreate } from '../types/project';
 
 const Projects: React.FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { projects, loading, error } = useAppSelector((state: any) => state.projects);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
