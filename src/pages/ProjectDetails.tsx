@@ -9,12 +9,13 @@ import { Task } from '../types/task';
 import { Resource } from '../types/resource';
 import TaskForm from '../components/tasks/TaskForm';
 import { TaskCreate, TaskUpdate } from '../types/task';
+import type { RootState } from '../app/store';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { projects, loading, error } = useAppSelector((state) => state.projects);
+  const { projects, loading, error } = useAppSelector((state: RootState) => state.projects);
   const project = projects.find((p) => p.id === id);
   const [tasks, setTasks] = React.useState<Task[]>([]);
   const [resources, setResources] = React.useState<Resource[]>([]);

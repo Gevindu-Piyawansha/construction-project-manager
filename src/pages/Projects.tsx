@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Button,
-  Grid,
   Box,
   CircularProgress,
   Alert,
 } from '@mui/material';
+// Using Tailwind grid instead of MUI Grid to avoid MUI Grid TypeScript overload errors
 import { Add as AddIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -23,7 +23,7 @@ import { Project, ProjectCreate } from '../types/project';
 const Projects: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { projects, loading, error } = useAppSelector((state) => state.projects);
+  const { projects, loading, error } = useAppSelector((state: any) => state.projects);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -89,18 +89,18 @@ const Projects: React.FC = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Grid container spacing={3}>
-          {projects.map((project) => (
-            <Grid item xs={12} sm={6} md={4} key={project.id}>
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project: Project) => (
+            <div key={project.id}>
               <ProjectCard
                 project={project}
                 onView={handleViewProject}
                 onEdit={handleEditProject}
                 onDelete={handleDeleteProject}
               />
-            </Grid>
+            </div>
           ))}
-        </Grid>
+        </div>
       )}
 
       <ProjectForm

@@ -8,59 +8,51 @@ import {
   TextField,
   MenuItem,
 } from '@mui/material';
-import { Task, TaskCreate } from '../../types/task';
 
-interface TaskFormProps {
+// Grid2 (new Grid API) import
+// removed MUI Grid due to type overload issues; use Tailwind CSS grid instead
+import { Project, ProjectCreate } from '../../types/project';
+
+interface ProjectFormProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (task: TaskCreate) => void;
-  initialData?: Partial<TaskCreate>;
+  onSubmit: (project: ProjectCreate) => void;
+  initialData?: Project;
   title?: string;
 }
 
-const TASK_STATUS = [
-  { value: 'todo', label: 'To Do' },
+const PROJECT_STATUS = [
+  { value: 'planning', label: 'Planning' },
   { value: 'in-progress', label: 'In Progress' },
   { value: 'completed', label: 'Completed' },
-  { value: 'blocked', label: 'Blocked' },
-] as const;
+  { value: 'on-hold', label: 'On Hold' },
+];
 
-const TASK_PRIORITY = [
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' },
-] as const;
-
-const TaskForm: React.FC<TaskFormProps> = ({
+const ProjectForm: React.FC<ProjectFormProps> = ({
   open,
   onClose,
   onSubmit,
-  initialData = {},
-  title = 'Add Task',
+  initialData,
+  title = 'Create Project',
 }) => {
-  const [formData, setFormData] = React.useState<TaskCreate>({
-    projectId: '',
-    title: '',
+  const [formData, setFormData] = React.useState<ProjectCreate>({
+    name: '',
     description: '',
-    status: 'todo',
-    priority: 'medium',
-    assignedTo: [],
     startDate: '',
-    dueDate: '',
-    dependencies: [],
+    endDate: '',
+    status: 'planning',
+    budget: 0,
+    location: '',
+    manager: '',
     progress: 0,
     ...initialData,
   });
 
-  React.useEffect(() => {
-    setFormData((prev: TaskCreate) => ({ ...prev, ...initialData }));
-  }, [initialData]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-  setFormData((prev: TaskCreate) => ({
+  setFormData((prev: ProjectCreate) => ({
       ...prev,
-      [name]: name === 'progress' ? Number(value) : value,
+      [name]: name === 'budget' || name === 'progress' ? Number(value) : value,
     }));
   };
 
@@ -78,9 +70,9 @@ const TaskForm: React.FC<TaskFormProps> = ({
           <div className="grid gap-4 mt-2 grid-cols-1 md:grid-cols-2">
             <div className="col-span-1 md:col-span-2">
               <TextField
-                name="title"
-                label="Task Title"
-                value={formData.title}
+                name="name"
+                label="Project Name"
+                value={formData.name}
                 onChange={handleChange}
                 fullWidth
                 required
@@ -95,45 +87,9 @@ const TaskForm: React.FC<TaskFormProps> = ({
                 onChange={handleChange}
                 fullWidth
                 multiline
-                rows={3}
+                rows={4}
                 required
               />
-            </div>
-
-            <div>
-              <TextField
-                name="status"
-                label="Status"
-                value={formData.status}
-                onChange={handleChange}
-                select
-                fullWidth
-                required
-              >
-                {TASK_STATUS.map((status) => (
-                  <MenuItem key={status.value} value={status.value}>
-                    {status.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-
-            <div>
-              <TextField
-                name="priority"
-                label="Priority"
-                value={formData.priority}
-                onChange={handleChange}
-                select
-                fullWidth
-                required
-              >
-                {TASK_PRIORITY.map((priority) => (
-                  <MenuItem key={priority.value} value={priority.value}>
-                    {priority.label}
-                  </MenuItem>
-                ))}
-              </TextField>
             </div>
 
             <div>
@@ -151,14 +107,66 @@ const TaskForm: React.FC<TaskFormProps> = ({
 
             <div>
               <TextField
-                name="dueDate"
-                label="Due Date"
+                name="endDate"
+                label="End Date"
                 type="date"
-                value={formData.dueDate}
+                value={formData.endDate}
                 onChange={handleChange}
                 fullWidth
                 required
                 InputLabelProps={{ shrink: true }}
+              />
+            </div>
+
+            <div>
+              <TextField
+                name="status"
+                label="Status"
+                value={formData.status}
+                onChange={handleChange}
+                select
+                fullWidth
+                required
+              >
+                {PROJECT_STATUS.map((status) => (
+                  <MenuItem key={status.value} value={status.value}>
+                    {status.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+
+            <div>
+              <TextField
+                name="budget"
+                label="Budget"
+                type="number"
+                value={formData.budget}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </div>
+
+            <div>
+              <TextField
+                name="location"
+                label="Location"
+                value={formData.location}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </div>
+
+            <div>
+              <TextField
+                name="manager"
+                label="Project Manager"
+                value={formData.manager}
+                onChange={handleChange}
+                fullWidth
+                required
               />
             </div>
 
@@ -192,4 +200,4 @@ const TaskForm: React.FC<TaskFormProps> = ({
   );
 };
 
-export default TaskForm;
+export default ProjectForm;
