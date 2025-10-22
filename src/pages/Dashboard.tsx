@@ -106,16 +106,16 @@ const Dashboard: React.FC = () => {
   };
 
   // Budget comparison data
+  const sortedByBudget = [...projects].sort((a: Project, b: Project) => b.budget - a.budget);
+  
   const budgetData = {
-    labels: projects
-      .sort((a: Project, b: Project) => b.budget - a.budget)
+    labels: sortedByBudget
       .slice(0, 6)
       .map((p: Project) => p.name.substring(0, 15)),
     datasets: [
       {
         label: 'Budget (NOK)',
-        data: projects
-          .sort((a: Project, b: Project) => b.budget - a.budget)
+        data: sortedByBudget
           .slice(0, 6)
           .map((p: Project) => p.budget / 1000000), // Convert to millions
         backgroundColor: [
