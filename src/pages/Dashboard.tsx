@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Typography, Box, Card, CardContent } from '@mui/material';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Pie, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -39,6 +40,7 @@ ChartJS.register(
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { projects, loading } = useAppSelector((state) => state.projects);
 
   useEffect(() => {
@@ -139,13 +141,14 @@ const Dashboard: React.FC = () => {
     ],
   };
 
-  const StatCard = ({ title, value, icon: Icon, color }: any) => (
+  const StatCard = ({ title, value, icon: Icon, color, status }: any) => (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       whileHover={{ y: -4, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
       style={{ flex: '1 1 150px', minWidth: '150px', maxWidth: '200px' }}
+      onClick={() => navigate(status ? `/projects?status=${status}` : '/projects')}
     >
       <Card 
         sx={{ 
@@ -154,6 +157,7 @@ const Dashboard: React.FC = () => {
           alignItems: 'center',
           boxShadow: 3,
           borderRadius: 2,
+          cursor: 'pointer',
           transition: 'box-shadow 0.2s',
         }}
       >
@@ -220,36 +224,42 @@ const Dashboard: React.FC = () => {
           value={stats.total}
           icon={ProjectIcon}
           color="#1976d2"
+          status=""
         />
         <StatCard
           title="Planning"
           value={stats.planning}
           icon={ProjectIcon}
           color="#2196f3"
+          status="planning"
         />
         <StatCard
           title="In Progress"
           value={stats.inProgress}
           icon={TrendingIcon}
           color="#ff9800"
+          status="in-progress"
         />
         <StatCard
           title="Completed"
           value={stats.completed}
           icon={MoneyIcon}
           color="#4caf50"
+          status="completed"
         />
         <StatCard
           title="On Hold"
           value={stats.onHold}
           icon={WarningIcon}
           color="#f44336"
+          status="on-hold"
         />
         <StatCard
           title="Avg Progress"
           value={`${stats.avgProgress}%`}
           icon={TrendingIcon}
           color="#9c27b0"
+          status=""
         />
       </motion.div>
 

@@ -14,6 +14,7 @@ import {
 // Using Tailwind grid instead of MUI Grid to avoid MUI Grid TypeScript overload errors
 import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { motion } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   fetchProjects,
@@ -30,13 +31,14 @@ import { Project, ProjectCreate } from '../types/project';
 
 const Projects: React.FC = () => {
   const dispatch = useAppDispatch();  
+  const [searchParams, setSearchParams] = useSearchParams();
  
   const { projects, loading, error } = useAppSelector((state: any) => state.projects);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [viewProject, setViewProject] = useState<Project | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || 'all');
   const [sortBy, setSortBy] = useState<string>('name');
   
   // Toast notifications hook
@@ -45,6 +47,14 @@ const Projects: React.FC = () => {
   useEffect(() => {
     dispatch(fetchProjects());
   }, [dispatch]);
+
+  // Sync statusFilter with URL params on mount and when URL changes
+  useEffect(() => {
+    const status = searchParams.get('status');
+    const newFilter = status || 'all';
+    setStatusFilter(newFilter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleCreateProject = async (project: ProjectCreate) => {
     try {
@@ -162,18 +172,21 @@ const Projects: React.FC = () => {
       {/* Quick Stats */}
       <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
         <Card 
+          onClick={() => setSearchParams({})}
           sx={{ 
             bgcolor: 'primary.main', 
             color: 'white',
             borderRadius: 2,
-            boxShadow: 3,
+            boxShadow: statusFilter === 'all' ? 8 : 3,
             flex: '1 1 150px',
             minWidth: '150px',
             maxWidth: '200px',
             height: '110px',
             display: 'flex',
             alignItems: 'center',
-            transition: 'transform 0.2s, box-shadow 0.2s',
+            cursor: 'pointer',
+            border: statusFilter === 'all' ? '3px solid white' : 'none',
+            transition: 'transform 0.2s, box-shadow 0.2s, border 0.2s',
             '&:hover': {
               transform: 'translateY(-4px)',
               boxShadow: 6,
@@ -190,18 +203,21 @@ const Projects: React.FC = () => {
           </CardContent>
         </Card>
         <Card 
+          onClick={() => setSearchParams({ status: 'planning' })}
           sx={{ 
             bgcolor: '#2196f3', 
             color: 'white',
             borderRadius: 2,
-            boxShadow: 3,
+            boxShadow: statusFilter === 'planning' ? 8 : 3,
             flex: '1 1 150px',
             minWidth: '150px',
             maxWidth: '200px',
             height: '110px',
             display: 'flex',
             alignItems: 'center',
-            transition: 'transform 0.2s, box-shadow 0.2s',
+            cursor: 'pointer',
+            border: statusFilter === 'planning' ? '3px solid white' : 'none',
+            transition: 'transform 0.2s, box-shadow 0.2s, border 0.2s',
             '&:hover': {
               transform: 'translateY(-4px)',
               boxShadow: 6,
@@ -218,18 +234,21 @@ const Projects: React.FC = () => {
           </CardContent>
         </Card>
         <Card 
+          onClick={() => setSearchParams({ status: 'in-progress' })}
           sx={{ 
             bgcolor: 'warning.main', 
             color: 'white',
             borderRadius: 2,
-            boxShadow: 3,
+            boxShadow: statusFilter === 'in-progress' ? 8 : 3,
             flex: '1 1 150px',
             minWidth: '150px',
             maxWidth: '200px',
             height: '110px',
             display: 'flex',
             alignItems: 'center',
-            transition: 'transform 0.2s, box-shadow 0.2s',
+            cursor: 'pointer',
+            border: statusFilter === 'in-progress' ? '3px solid white' : 'none',
+            transition: 'transform 0.2s, box-shadow 0.2s, border 0.2s',
             '&:hover': {
               transform: 'translateY(-4px)',
               boxShadow: 6,
@@ -246,18 +265,21 @@ const Projects: React.FC = () => {
           </CardContent>
         </Card>
         <Card 
+          onClick={() => setSearchParams({ status: 'completed' })}
           sx={{ 
             bgcolor: 'success.main', 
             color: 'white',
             borderRadius: 2,
-            boxShadow: 3,
+            boxShadow: statusFilter === 'completed' ? 8 : 3,
             flex: '1 1 150px',
             minWidth: '150px',
             maxWidth: '200px',
             height: '110px',
             display: 'flex',
             alignItems: 'center',
-            transition: 'transform 0.2s, box-shadow 0.2s',
+            cursor: 'pointer',
+            border: statusFilter === 'completed' ? '3px solid white' : 'none',
+            transition: 'transform 0.2s, box-shadow 0.2s, border 0.2s',
             '&:hover': {
               transform: 'translateY(-4px)',
               boxShadow: 6,
@@ -274,18 +296,21 @@ const Projects: React.FC = () => {
           </CardContent>
         </Card>
         <Card 
+          onClick={() => setSearchParams({ status: 'on-hold' })}
           sx={{ 
             bgcolor: 'error.main', 
             color: 'white',
             borderRadius: 2,
-            boxShadow: 3,
+            boxShadow: statusFilter === 'on-hold' ? 8 : 3,
             flex: '1 1 150px',
             minWidth: '150px',
             maxWidth: '200px',
             height: '110px',
             display: 'flex',
             alignItems: 'center',
-            transition: 'transform 0.2s, box-shadow 0.2s',
+            cursor: 'pointer',
+            border: statusFilter === 'on-hold' ? '3px solid white' : 'none',
+            transition: 'transform 0.2s, box-shadow 0.2s, border 0.2s',
             '&:hover': {
               transform: 'translateY(-4px)',
               boxShadow: 6,
@@ -411,25 +436,13 @@ const Projects: React.FC = () => {
           </Typography>
         </Box>
       ) : (
-        <motion.div 
-          className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.1,
-              },
-            },
-          }}
-        >
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project: Project, index: number) => (
             <motion.div
               key={project.id}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 },
-              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
             >
               <ProjectCard
                 project={project}
@@ -439,7 +452,7 @@ const Projects: React.FC = () => {
               />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       )}
 
       <ProjectForm
