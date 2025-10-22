@@ -191,7 +191,7 @@ const Dashboard: React.FC = () => {
 
       {/* Statistics Cards */}
       <motion.div 
-        className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6"
+        className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 mb-6"
         initial="hidden"
         animate="visible"
         variants={{
@@ -226,6 +226,58 @@ const Dashboard: React.FC = () => {
           icon={MoneyIcon}
           color="#4caf50"
         />
+        <StatCard
+          title="On Hold"
+          value={stats.onHold}
+          icon={WarningIcon}
+          color="#f44336"
+        />
+      </motion.div>
+
+      {/* Budget and Progress Cards */}
+      <motion.div 
+        className="grid gap-6 grid-cols-1 sm:grid-cols-2 mb-6"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          visible: {
+            transition: {
+              staggerChildren: 0.1,
+              delayChildren: 0.5,
+            },
+          },
+        }}
+      >
+        <Card sx={{ bgcolor: 'success.main', color: 'white' }}>
+          <CardContent>
+            <Box display="flex" alignItems="center" justifyContent="space-between">
+              <Box>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Total Budget
+                </Typography>
+                <Typography variant="h5" fontWeight="bold">
+                  {formatBudget(stats.totalBudget)}
+                </Typography>
+              </Box>
+              <MoneyIcon sx={{ fontSize: 48, opacity: 0.8 }} />
+            </Box>
+          </CardContent>
+        </Card>
+        <Card sx={{ bgcolor: 'info.main', color: 'white' }}>
+          <CardContent>
+            <Box display="flex" alignItems="center" justifyContent="space-between">
+              <Box>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Average Progress
+                </Typography>
+                <Typography variant="h5" fontWeight="bold">
+                  {stats.avgProgress}%
+                </Typography>
+              </Box>
+              <TrendingIcon sx={{ fontSize: 48, opacity: 0.8 }} />
+            </Box>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Charts */}

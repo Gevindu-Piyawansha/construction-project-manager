@@ -159,18 +159,28 @@ const Projects: React.FC = () => {
       </Box>
 
       {/* Quick Stats */}
-      <Box className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
         <Card sx={{ bgcolor: 'primary.main', color: 'white' }}>
           <CardContent sx={{ py: 2 }}>
             <Typography variant="body2" sx={{ opacity: 0.9 }}>
-              Total Projects
+              Total
             </Typography>
             <Typography variant="h4" fontWeight="bold">
               {projects.length}
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ bgcolor: 'info.main', color: 'white' }}>
+        <Card sx={{ bgcolor: '#2196f3', color: 'white' }}>
+          <CardContent sx={{ py: 2 }}>
+            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              Planning
+            </Typography>
+            <Typography variant="h4" fontWeight="bold">
+              {projects.filter((p: Project) => p.status === 'planning').length}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card sx={{ bgcolor: 'warning.main', color: 'white' }}>
           <CardContent sx={{ py: 2 }}>
             <Typography variant="body2" sx={{ opacity: 0.9 }}>
               In Progress
@@ -187,6 +197,16 @@ const Projects: React.FC = () => {
             </Typography>
             <Typography variant="h4" fontWeight="bold">
               {projects.filter((p: Project) => p.status === 'completed').length}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card sx={{ bgcolor: 'error.main', color: 'white' }}>
+          <CardContent sx={{ py: 2 }}>
+            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              On Hold
+            </Typography>
+            <Typography variant="h4" fontWeight="bold">
+              {projects.filter((p: Project) => p.status === 'on-hold').length}
             </Typography>
           </CardContent>
         </Card>
