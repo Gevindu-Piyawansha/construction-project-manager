@@ -29,7 +29,8 @@ import { useToast } from '../hooks/useToast';
 import { Project, ProjectCreate } from '../types/project';
 
 const Projects: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();  
+ 
   const { projects, loading, error } = useAppSelector((state: any) => state.projects);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -159,10 +160,28 @@ const Projects: React.FC = () => {
       </Box>
 
       {/* Quick Stats */}
-      <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-        <Card sx={{ bgcolor: 'primary.main', color: 'white' }}>
-          <CardContent sx={{ py: 2 }}>
-            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+        <Card 
+          sx={{ 
+            bgcolor: 'primary.main', 
+            color: 'white',
+            borderRadius: 2,
+            boxShadow: 3,
+            flex: '1 1 150px',
+            minWidth: '150px',
+            maxWidth: '200px',
+            height: '110px',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: 6,
+            }
+          }}
+        >
+          <CardContent sx={{ width: '100%', py: 1.5, px: 1, textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ opacity: 0.9, mb: 0.5, fontWeight: 500, display: 'block', fontSize: '0.7rem' }}>
               Total
             </Typography>
             <Typography variant="h4" fontWeight="bold">
@@ -170,9 +189,27 @@ const Projects: React.FC = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ bgcolor: '#2196f3', color: 'white' }}>
-          <CardContent sx={{ py: 2 }}>
-            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+        <Card 
+          sx={{ 
+            bgcolor: '#2196f3', 
+            color: 'white',
+            borderRadius: 2,
+            boxShadow: 3,
+            flex: '1 1 150px',
+            minWidth: '150px',
+            maxWidth: '200px',
+            height: '110px',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: 6,
+            }
+          }}
+        >
+          <CardContent sx={{ width: '100%', py: 1.5, px: 1, textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ opacity: 0.9, mb: 0.5, fontWeight: 500, display: 'block', fontSize: '0.7rem' }}>
               Planning
             </Typography>
             <Typography variant="h4" fontWeight="bold">
@@ -180,9 +217,27 @@ const Projects: React.FC = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ bgcolor: 'warning.main', color: 'white' }}>
-          <CardContent sx={{ py: 2 }}>
-            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+        <Card 
+          sx={{ 
+            bgcolor: 'warning.main', 
+            color: 'white',
+            borderRadius: 2,
+            boxShadow: 3,
+            flex: '1 1 150px',
+            minWidth: '150px',
+            maxWidth: '200px',
+            height: '110px',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: 6,
+            }
+          }}
+        >
+          <CardContent sx={{ width: '100%', py: 1.5, px: 1, textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ opacity: 0.9, mb: 0.5, fontWeight: 500, display: 'block', fontSize: '0.7rem' }}>
               In Progress
             </Typography>
             <Typography variant="h4" fontWeight="bold">
@@ -190,9 +245,27 @@ const Projects: React.FC = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ bgcolor: 'success.main', color: 'white' }}>
-          <CardContent sx={{ py: 2 }}>
-            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+        <Card 
+          sx={{ 
+            bgcolor: 'success.main', 
+            color: 'white',
+            borderRadius: 2,
+            boxShadow: 3,
+            flex: '1 1 150px',
+            minWidth: '150px',
+            maxWidth: '200px',
+            height: '110px',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: 6,
+            }
+          }}
+        >
+          <CardContent sx={{ width: '100%', py: 1.5, px: 1, textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ opacity: 0.9, mb: 0.5, fontWeight: 500, display: 'block', fontSize: '0.7rem' }}>
               Completed
             </Typography>
             <Typography variant="h4" fontWeight="bold">
@@ -200,9 +273,27 @@ const Projects: React.FC = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ bgcolor: 'error.main', color: 'white' }}>
-          <CardContent sx={{ py: 2 }}>
-            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+        <Card 
+          sx={{ 
+            bgcolor: 'error.main', 
+            color: 'white',
+            borderRadius: 2,
+            boxShadow: 3,
+            flex: '1 1 150px',
+            minWidth: '150px',
+            maxWidth: '200px',
+            height: '110px',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: 6,
+            }
+          }}
+        >
+          <CardContent sx={{ width: '100%', py: 1.5, px: 1, textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ opacity: 0.9, mb: 0.5, fontWeight: 500, display: 'block', fontSize: '0.7rem' }}>
               On Hold
             </Typography>
             <Typography variant="h4" fontWeight="bold">
@@ -210,9 +301,27 @@ const Projects: React.FC = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ bgcolor: 'secondary.main', color: 'white' }}>
-          <CardContent sx={{ py: 2 }}>
-            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+        <Card 
+          sx={{ 
+            bgcolor: 'secondary.main', 
+            color: 'white',
+            borderRadius: 2,
+            boxShadow: 3,
+            flex: '1 1 150px',
+            minWidth: '150px',
+            maxWidth: '200px',
+            height: '110px',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: 6,
+            }
+          }}
+        >
+          <CardContent sx={{ width: '100%', py: 1.5, px: 1, textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ opacity: 0.9, mb: 0.5, fontWeight: 500, display: 'block', fontSize: '0.7rem' }}>
               Avg Progress
             </Typography>
             <Typography variant="h4" fontWeight="bold">

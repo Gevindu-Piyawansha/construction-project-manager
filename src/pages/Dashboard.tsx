@@ -144,26 +144,39 @@ const Dashboard: React.FC = () => {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ scale: 1.05 }}
+      whileHover={{ y: -4, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
+      style={{ flex: '1 1 150px', minWidth: '150px', maxWidth: '200px' }}
     >
-      <Card className="h-full" sx={{ boxShadow: 2 }}>
-        <CardContent>
-          <Box className="flex items-center justify-between">
-            <Box>
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                {title}
-              </Typography>
-              <Typography variant="h4" component="div" fontWeight="bold">
-                {value}
-              </Typography>
-            </Box>
-            <Box
-              className="rounded-full p-3"
-              style={{ backgroundColor: `${color}20` }}
-            >
-              <Icon style={{ fontSize: 32, color }} />
-            </Box>
+      <Card 
+        sx={{ 
+          height: '110px',
+          display: 'flex',
+          alignItems: 'center',
+          boxShadow: 3,
+          borderRadius: 2,
+          transition: 'box-shadow 0.2s',
+        }}
+      >
+        <CardContent sx={{ width: '100%', py: 1.5, px: 1, textAlign: 'center' }}>
+          <Box
+            className="rounded-full mx-auto mb-1"
+            style={{ 
+              backgroundColor: `${color}20`,
+              width: '40px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Icon style={{ fontSize: 24, color }} />
           </Box>
+          <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500, display: 'block', fontSize: '0.7rem' }}>
+            {title}
+          </Typography>
+          <Typography variant="h4" component="div" fontWeight="bold">
+            {value}
+          </Typography>
         </CardContent>
       </Card>
     </motion.div>
@@ -191,7 +204,7 @@ const Dashboard: React.FC = () => {
 
       {/* Statistics Cards */}
       <motion.div 
-        className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 mb-6"
+        style={{ display: 'flex', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' }}
         initial="hidden"
         animate="visible"
         variants={{
@@ -203,7 +216,7 @@ const Dashboard: React.FC = () => {
         }}
       >
         <StatCard
-          title="Total Projects"
+          title="Total"
           value={stats.total}
           icon={ProjectIcon}
           color="#1976d2"
@@ -232,49 +245,40 @@ const Dashboard: React.FC = () => {
           icon={WarningIcon}
           color="#f44336"
         />
+        <StatCard
+          title="Avg Progress"
+          value={`${stats.avgProgress}%`}
+          icon={TrendingIcon}
+          color="#9c27b0"
+        />
       </motion.div>
 
-      {/* Budget and Progress Cards */}
+      {/* Total Budget Card */}
       <motion.div 
-        className="grid gap-6 grid-cols-1 sm:grid-cols-2 mb-6"
-        initial="hidden"
-        animate="visible"
-        variants={{
-          visible: {
-            transition: {
-              staggerChildren: 0.1,
-              delayChildren: 0.5,
-            },
-          },
-        }}
+        className="mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <Card sx={{ bgcolor: 'success.main', color: 'white' }}>
+        <Card 
+          sx={{ 
+            bgcolor: 'success.main', 
+            color: 'white',
+            borderRadius: 3,
+            boxShadow: 4,
+          }}
+        >
           <CardContent>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Box>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Total Budget
+                <Typography variant="body2" sx={{ opacity: 0.9, mb: 1 }}>
+                  Total Budget (All Projects)
                 </Typography>
-                <Typography variant="h5" fontWeight="bold">
+                <Typography variant="h4" fontWeight="bold">
                   {formatBudget(stats.totalBudget)}
                 </Typography>
               </Box>
-              <MoneyIcon sx={{ fontSize: 48, opacity: 0.8 }} />
-            </Box>
-          </CardContent>
-        </Card>
-        <Card sx={{ bgcolor: 'info.main', color: 'white' }}>
-          <CardContent>
-            <Box display="flex" alignItems="center" justifyContent="space-between">
-              <Box>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Average Progress
-                </Typography>
-                <Typography variant="h5" fontWeight="bold">
-                  {stats.avgProgress}%
-                </Typography>
-              </Box>
-              <TrendingIcon sx={{ fontSize: 48, opacity: 0.8 }} />
+              <MoneyIcon sx={{ fontSize: 56, opacity: 0.8 }} />
             </Box>
           </CardContent>
         </Card>
