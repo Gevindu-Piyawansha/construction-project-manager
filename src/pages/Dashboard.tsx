@@ -209,22 +209,22 @@ const Dashboard: React.FC = () => {
           color="#1976d2"
         />
         <StatCard
+          title="Planning"
+          value={stats.planning}
+          icon={ProjectIcon}
+          color="#2196f3"
+        />
+        <StatCard
           title="In Progress"
           value={stats.inProgress}
           icon={TrendingIcon}
           color="#ff9800"
         />
         <StatCard
-          title="Total Budget"
-          value={formatBudget(stats.totalBudget)}
+          title="Completed"
+          value={stats.completed}
           icon={MoneyIcon}
           color="#4caf50"
-        />
-        <StatCard
-          title="Avg Progress"
-          value={`${stats.avgProgress}%`}
-          icon={WarningIcon}
-          color="#f44336"
         />
       </motion.div>
 
