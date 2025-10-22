@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Typography, Box, Card, CardContent } from '@mui/material';
+import { motion } from 'framer-motion';
 import { Pie, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -139,26 +140,33 @@ const Dashboard: React.FC = () => {
   };
 
   const StatCard = ({ title, value, icon: Icon, color }: any) => (
-    <Card className="h-full hover:shadow-lg transition-shadow">
-      <CardContent>
-        <Box className="flex items-center justify-between">
-          <Box>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              {title}
-            </Typography>
-            <Typography variant="h4" component="div">
-              {value}
-            </Typography>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ scale: 1.05 }}
+    >
+      <Card className="h-full" sx={{ boxShadow: 2 }}>
+        <CardContent>
+          <Box className="flex items-center justify-between">
+            <Box>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                {title}
+              </Typography>
+              <Typography variant="h4" component="div" fontWeight="bold">
+                {value}
+              </Typography>
+            </Box>
+            <Box
+              className="rounded-full p-3"
+              style={{ backgroundColor: `${color}20` }}
+            >
+              <Icon style={{ fontSize: 32, color }} />
+            </Box>
           </Box>
-          <Box
-            className="rounded-full p-3"
-            style={{ backgroundColor: `${color}20` }}
-          >
-            <Icon style={{ fontSize: 32, color }} />
-          </Box>
-        </Box>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 
   if (loading) {
@@ -171,12 +179,29 @@ const Dashboard: React.FC = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom className="mb-6">
-        Dashboard
-      </Typography>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Typography variant="h4" gutterBottom className="mb-6">
+          Dashboard
+        </Typography>
+      </motion.div>
 
       {/* Statistics Cards */}
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+      <motion.div 
+        className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          visible: {
+            transition: {
+              staggerChildren: 0.1,
+            },
+          },
+        }}
+      >
         <StatCard
           title="Total Projects"
           value={stats.total}
@@ -201,10 +226,15 @@ const Dashboard: React.FC = () => {
           icon={WarningIcon}
           color="#f44336"
         />
-      </div>
+      </motion.div>
 
       {/* Charts */}
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 mb-6">
+      <motion.div 
+        className="grid gap-6 grid-cols-1 lg:grid-cols-2 mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
@@ -236,10 +266,15 @@ const Dashboard: React.FC = () => {
             </Box>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
 
       {/* Budget Comparison Chart */}
-      <Card>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+      >
+        <Card>
         <CardContent>
           <Typography variant="h6" gutterBottom>
             Projects by Budget (Millions NOK)
@@ -269,6 +304,7 @@ const Dashboard: React.FC = () => {
           </Box>
         </CardContent>
       </Card>
+      </motion.div>
     </Box>
   );
 };

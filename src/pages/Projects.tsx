@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 // Using Tailwind grid instead of MUI Grid to avoid MUI Grid TypeScript overload errors
 import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   fetchProjects,
@@ -281,18 +282,35 @@ const Projects: React.FC = () => {
           </Typography>
         </Box>
       ) : (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((project: Project) => (
-            <div key={project.id}>
+        <motion.div 
+          className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+        >
+          {filteredProjects.map((project: Project, index: number) => (
+            <motion.div
+              key={project.id}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+            >
               <ProjectCard
                 project={project}
                 onView={handleViewProject}
                 onEdit={handleEditProject}
                 onDelete={handleDeleteProject}
               />
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
 
       <ProjectForm

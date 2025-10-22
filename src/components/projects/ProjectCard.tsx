@@ -17,6 +17,7 @@ import {
   CalendarToday as CalendarIcon,
   Person as PersonIcon,
 } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { Project } from '../../types/project';
 
 interface ProjectCardProps {
@@ -57,14 +58,25 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   onDelete,
 }) => {
   return (
-    <Card 
-      className="h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
-      sx={{
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-      }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ scale: 1.02, y: -4 }}
     >
+      <Card 
+        className="h-full flex flex-col"
+        sx={{
+          borderRadius: 2,
+          border: '1px solid',
+          borderColor: 'divider',
+          boxShadow: 2,
+          transition: 'box-shadow 0.3s ease',
+          '&:hover': {
+            boxShadow: 8,
+          },
+        }}
+      >
       <CardContent className="flex-grow">
         <Box className="flex justify-between items-start mb-3">
           <Typography variant="h6" component="div" className="font-bold">
@@ -179,6 +191,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </Tooltip>
       </CardActions>
     </Card>
+    </motion.div>
   );
 };
 
