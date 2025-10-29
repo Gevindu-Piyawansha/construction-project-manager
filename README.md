@@ -129,7 +129,7 @@ This app is ready to deploy to:
 - 🇳🇴 Understanding of Norwegian construction industry and Stavanger region projects
 - 🏗️ Combining software expertise with construction domain knowledge
 - GitHub: [@Gevindu-Piyawansha](https://github.com/Gevindu-Piyawansha)
-- 📧 Contact: [your.email@example.com]
+- 📧 Contact: [gevindu.piyawansha@gmail.com]
 
 ## 🎯 Portfolio Highlights
 
